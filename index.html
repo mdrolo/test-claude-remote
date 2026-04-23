@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CI/CD Pipeline Validator</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="header">
+      <div class="header-inner">
+        <div class="logo">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <rect width="32" height="32" rx="8" fill="#6366f1"/>
+            <path d="M8 16L13 21L24 11" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <span>CI/CD Validator</span>
+        </div>
+        <div class="header-meta">
+          <span class="branch-badge">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M11.75 2.5a.75.75 0 1 0 0 1.5.75.75 0 0 0 0-1.5zm-2.25.75a2.25 2.25 0 1 1 3 2.122V6A2.5 2.5 0 0 1 10 8.5H6a1 1 0 0 0-1 1v1.128a2.251 2.251 0 1 1-1.5 0V5.372a2.25 2.25 0 1 1 1.5 0v1.836A2.492 2.492 0 0 1 6 7h4a1 1 0 0 0 1-1v-.628A2.25 2.25 0 0 1 9.5 3.25z"/>
+            </svg>
+            main
+          </span>
+          <button class="btn-run" id="runAll">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0zm4.879-2.773 4.264 2.559a.25.25 0 0 1 0 .428l-4.264 2.559A.25.25 0 0 1 6 10.559V5.442a.25.25 0 0 1 .379-.215z"/>
+            </svg>
+            Lancer tous les tests
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="main">
+      <div class="pipeline-overview">
+        <div class="pipeline-track">
+          <div class="pipeline-step" data-stage="lint">
+            <div class="step-icon">🔍</div>
+            <div class="step-label">Lint</div>
+            <div class="step-status idle">—</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step" data-stage="build">
+            <div class="step-icon">🔨</div>
+            <div class="step-label">Build</div>
+            <div class="step-status idle">—</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step" data-stage="test">
+            <div class="step-icon">🧪</div>
+            <div class="step-label">Tests</div>
+            <div class="step-status idle">—</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step" data-stage="security">
+            <div class="step-icon">🔒</div>
+            <div class="step-label">Sécurité</div>
+            <div class="step-status idle">—</div>
+          </div>
+          <div class="pipeline-arrow">→</div>
+          <div class="pipeline-step" data-stage="deploy">
+            <div class="step-icon">🚀</div>
+            <div class="step-label">Déploiement</div>
+            <div class="step-status idle">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="stages-grid">
+
+        <!-- LINT -->
+        <section class="stage-card" data-stage="lint">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="card-icon">🔍</span>
+              <h2>Lint &amp; Format</h2>
+            </div>
+            <div class="card-badge idle" id="badge-lint">En attente</div>
+          </div>
+          <div class="tests-list">
+            <div class="test-item" data-test="eslint" data-stage="lint" data-duration="800">
+              <span class="test-name">ESLint — pas d'erreurs de syntaxe</span>
+              <span class="test-result pending">·</span>
+            </div>
+            <div class="test-item" data-test="prettier" data-stage="lint" data-duration="600">
+              <span class="test-name">Prettier — formatage cohérent</span>
+              <span class="test-result pending">·</span>
+            </div>
+            <div class="test-item" data-test="typescript" data-stage="lint" data-duration="1200">
+              <span class="test-name">TypeScript — vérification des types</span>
+              <span class="test-result pending">·</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn-stage" data-stage="lint">▶ Exécuter</button>
+            <span class="duration-label" id="dur-lint"></span>
+          </div>
+        </section>
+
+        <!-- BUILD -->
+        <section class="stage-card" data-stage="build">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="card-icon">🔨</span>
+              <h2>Build</h2>
+            </div>
+            <div class="card-badge idle" id="badge-build">En attente</div>
+          </div>
+          <div class="tests-list">
+            <div class="test-item" data-test="deps" data-stage="build" data-duration="2000">
+              <span class="test-name">Installation des dépendances</span>
+              <span class="test-result pending">·</span>
+            </div>
+            <div class="test-item" data-test="compile" data-stage="build" data-duration="3000">
+              <span class="test-name">Compilation du projet</span>
+              <span class="test-result pending">·</span>
+            </div>
+            <div class="test-item" data-test="bundle" data-stage="build" data-duration="1500">
+              <span class="test-name">Optimisation du bundle</span>
+              <span class="test-result pending">·</span>
+            </div>
+            <div class="test-item" data-test="assets" data-stage="build" data-duration="900">
+              <span class="test-name">Génération des assets statiques</span>
+              <span class="test-result pending">·</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn-stage" data-stage="build">▶ Exécuter</button>
+            <span class="duration-label" id="dur-build"></span>
+          </div>
+        </section>
+
+        <!-- TESTS -->
+        <section class="stage-card" data-stage="test">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="card-icon">🧪</span>
+              <h2>Tests</h2>
+            </div>
+            <div class="card-badge idle" id="badge-test">En attente</div>
+          </div>
+          <div class="tests-list">
+            <div class="test-item" data-test="unit" data-stage="test" data-duration="1800">
+              <span class="test-name">Tests unitaires (42 / 42)</span>
+              <span class="test-result pending">·</span>
+            </div>
+            <div class="test-item" data-test="integration" data-stage="test" data-duration="4000">
+              <span class="test-name">Tests d'intégration (18 / 18)</span>
+              <span class="test-result pending">·</span>
+            </div>
+            <div class="test-item" data-test="e2e" data-stage="test" data-duration="6000">
+              <span class="test-name">Tests end-to-end (7 / 7)</span>
+              <span class="test-result pending">·</span>
+            </div>
+            <div class="test-item" data-test="coverage" data-stage="test" data-duration="1000">
+              <span class="test-name">Couverture de code ≥ 80%</span>
+              <span class="test-result pending">·</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn-stage" data-stage="test">▶ Exécuter</button>
+            <span class="duration-label" id="dur-test"></span>
+          </div>
+        </section>
+
+        <!-- SECURITY -->
+        <section class="stage-card" data-stage="security">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="card-icon">🔒</span>
+              <h2>Sécurité</h2>
+            </div>
+            <div class="card-badge idle" id="badge-security">En attente</div>
+          </div>
+          <div class="tests-list">
+            <div class="test-item" data-test="audit" data-stage="security" data-duration="2200">
+              <span class="test-name">Audit des dépendances (npm audit)</span>
+              <span class="test-result pending">·</span>
+            </div>
+            <div class="test-item" data-test="secrets" data-stage="security" data-duration="700">
+              <span class="test-name">Détection de secrets dans le code</span>
+              <span class="test-result pending">·</span>
+            </div>
+            <div class="test-item" data-test="sast" data-stage="security" data-duration="3500">
+              <span class="test-name">Analyse statique SAST</span>
+              <span class="test-result pending">·</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn-stage" data-stage="security">▶ Exécuter</button>
+            <span class="duration-label" id="dur-security"></span>
+          </div>
+        </section>
+
+        <!-- DEPLOY -->
+        <section class="stage-card" data-stage="deploy">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="card-icon">🚀</span>
+              <h2>Déploiement</h2>
+            </div>
+            <div class="card-badge idle" id="badge-deploy">En attente</div>
+          </div>
+          <div class="tests-list">
+            <div class="test-item" data-test="docker" data-stage="deploy" data-duration="5000">
+              <span class="test-name">Build image Docker</span>
+              <span class="test-result pending">·</span>
+            </div>
+            <div class="test-item" data-test="push" data-stage="deploy" data-duration="3000">
+              <span class="test-name">Push vers le registry</span>
+              <span class="test-result pending">·</span>
+            </div>
+            <div class="test-item" data-test="staging" data-stage="deploy" data-duration="4000">
+              <span class="test-name">Déploiement staging</span>
+              <span class="test-result pending">·</span>
+            </div>
+            <div class="test-item" data-test="smoke" data-stage="deploy" data-duration="2000">
+              <span class="test-name">Smoke tests post-déploiement</span>
+              <span class="test-result pending">·</span>
+            </div>
+            <div class="test-item" data-test="notify" data-stage="deploy" data-duration="500">
+              <span class="test-name">Notification Slack / équipe</span>
+              <span class="test-result pending">·</span>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button class="btn-stage" data-stage="deploy">▶ Exécuter</button>
+            <span class="duration-label" id="dur-deploy"></span>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- SUMMARY -->
+      <div class="summary-bar" id="summaryBar" style="display:none;">
+        <div class="summary-inner">
+          <div class="summary-icon" id="summaryIcon"></div>
+          <div class="summary-text" id="summaryText"></div>
+          <div class="summary-stats" id="summaryStats"></div>
+          <button class="btn-reset" id="resetAll">Réinitialiser</button>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <span>CI/CD Validator • test-claude-remote</span>
+      <span id="lastRun"></span>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

@@ -176,6 +176,25 @@ async function runPipeline(stagesToRun) {
   $$('.btn-stage').forEach(b => (b.disabled = false));
 }
 
+// ── Theme ─────────────────────────────────────────────────────────────────────
+
+function applyTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  document.getElementById('themeToggle').textContent = theme === 'light' ? '🌙' : '☀️';
+  localStorage.setItem('theme', theme);
+}
+
+(function initTheme() {
+  const saved = localStorage.getItem('theme');
+  const preferred = window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  applyTheme(saved ?? preferred);
+})();
+
+document.getElementById('themeToggle').addEventListener('click', () => {
+  const current = document.documentElement.getAttribute('data-theme');
+  applyTheme(current === 'light' ? 'dark' : 'light');
+});
+
 // ── Event listeners ──────────────────────────────────────────────────────────
 
 document.getElementById('runAll').addEventListener('click', () => {
